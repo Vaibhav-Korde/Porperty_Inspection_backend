@@ -1,11 +1,18 @@
-FROM eclipse-temurin:17-jdk
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY pom.xml .
+COPY src ./src
 
 RUN mvn clean package -DskipTests
 
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+COPY --from=builder /app/target/property-inspection-backend-0.0.2-SNAPSHOT.jar app.jar
+
 EXPOSE 8080
 
-CMD ["sh", "-c", "java -jar target/property-inspection-backend-0.0.2-SNAPSHOT.jar --server.port=${PORT:-8080}"]
+CMD ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8080}"]
