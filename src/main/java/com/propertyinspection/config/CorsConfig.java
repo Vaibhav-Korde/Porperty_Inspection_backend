@@ -3,8 +3,8 @@ package com.propertyinspection.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -12,11 +12,10 @@ import java.util.Arrays;
 public class CorsConfig {
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsFilter corsFilter() {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Allow the Vercel frontend and local Angular development
         configuration.setAllowedOriginPatterns(Arrays.asList(
                 "https://property-inspection-frontend.vercel.app",
                 "http://localhost:4200"
@@ -47,6 +46,6 @@ public class CorsConfig {
 
         source.registerCorsConfiguration("/**", configuration);
 
-        return source;
+        return new CorsFilter(source);
     }
 }
