@@ -3,33 +3,40 @@ package com.propertyinspection.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
+    public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200",
-                "https://property-inspection-frontend.vercel.app"
+        // Allow the Vercel frontend and local Angular development
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "https://property-inspection-frontend.vercel.app",
+                "http://localhost:4200"
         ));
 
-        configuration.setAllowedMethods(List.of(
+        configuration.setAllowedMethods(Arrays.asList(
                 "GET",
                 "POST",
                 "PUT",
                 "DELETE",
-                "OPTIONS"
+                "OPTIONS",
+                "HEAD"
         ));
 
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        configuration.setExposedHeaders(Arrays.asList(
+                "Content-Disposition",
+                "Content-Type"
+        ));
 
         configuration.setAllowCredentials(false);
 
@@ -40,6 +47,6 @@ public class CorsConfig {
 
         source.registerCorsConfiguration("/**", configuration);
 
-        return new CorsFilter(source);
+        return source;
     }
 }
