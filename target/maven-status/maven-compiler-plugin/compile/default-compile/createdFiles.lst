@@ -1,0 +1,6 @@
+com\propertyinspection\controller\ReportController.class
+com\propertyinspection\config\CorsConfig.class
+com\propertyinspection\dto\ProblemDto.class
+com\propertyinspection\dto\ReportRequest.class
+com\propertyinspection\PropertyInspectionApplication.class
+com\propertyinspection\service\PdfReportService.class
